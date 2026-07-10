@@ -1,0 +1,26 @@
+Python,
+pycache/
+*.pyc
+
+Llaves y credenciales - NUNCA subir,
+*.pem
+*.ppk
+.env
+
+Estado y credenciales de Terraform - NUNCA subir,
+.terraform/
+*.tfstate
+.tfstate.
+*.tfvars
+:fire:
+Haz clic para reaccionar
+:100:
+Haz clic para reaccionar
+:blue_circle:
+Haz clic para reaccionar
+Añadir reacción
+Responder
+Reenviar
+Más
+
+Enviar mensaje a CS
