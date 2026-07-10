@@ -1,5 +1,4 @@
 services:
-  # --- Base de datos PostgreSQL con volumen para persistencia ---
   base:
     image: postgres:16
     container_name: db_container
@@ -7,13 +6,8 @@ services:
       POSTGRES_DB: registro_visitas
       POSTGRES_USER: amg_user
       POSTGRES_PASSWORD: amg_secret
-    volumes:
-      
-datos_pg:/var/lib/postgresql/data
-  networks:
-red_amg
-
-  # --- Aplicación Flask (imagen construida con TU Dockerfile) ---
+    volumes: ["datos_pg:/var/lib/postgresql/data"]
+    networks: ["red_amg"]
   web:
     build: .
     container_name: myapp_container
@@ -23,29 +17,17 @@ red_amg
       DB_USER: amg_user
       DB_PASSWORD: amg_secret
       DB_PORT: 5432
-    depends_on:
-      
-base
-  networks:
-red_amg
-
-  # --- NGINX como reverse proxy: única puerta pública (puerto 80) ---
+    depends_on: ["base"]
+    networks: ["red_amg"]
   proxy:
     image: nginx:stable
     container_name: mynginx_container
-    ports:
-      
-"80:80"
-  volumes:
-./nginx/reverse-proxy.conf:/etc/nginx/conf.d/default.conf:ro
-depends_on:
-web
-networks:
-red_amg
-
+    ports: ["80:80"]
+    volumes: ["./nginx/reverse-proxy.conf:/etc/nginx/conf.d/default.conf:ro"]
+    depends_on: ["web"]
+    networks: ["red_amg"]
 networks:
   red_amg:
     driver: bridge
-
 volumes:
   datos_pg:
